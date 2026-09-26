@@ -44,7 +44,7 @@ install_dragged_file() {
 # 1. Configure GRUB
 # ------------------------------------------
 
-echo "[1/15] Configuring GRUB..."
+echo "[1/14] Configuring GRUB..."
 
 if grep -q '^GRUB_TIMEOUT=' /etc/default/grub; then
     sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
@@ -57,7 +57,7 @@ fi
 # ------------------------------------------
 
 echo
-echo "[2/15] Updating package lists..."
+echo "[2/14] Updating package lists..."
 
 apt update
 
@@ -66,7 +66,7 @@ apt update
 # ------------------------------------------
 
 echo
-echo "[3/15] Installing Mesa Vulkan drivers..."
+echo "[3/14] Installing Mesa Vulkan drivers..."
 
 if apt-cache show mesa-vulkan-drivers >/dev/null 2>&1; then
     apt install -y mesa-vulkan-drivers
@@ -80,7 +80,7 @@ fi
 # ------------------------------------------
 
 echo
-echo "[4/15] Installing Wine..."
+echo "[4/14] Installing Wine..."
 
 apt install -y wine
 
@@ -89,7 +89,7 @@ apt install -y wine
 # ------------------------------------------
 
 echo
-echo "[5/15] Installing Wine Mono..."
+echo "[5/14] Installing Wine Mono..."
 
 if apt-cache show wine-mono >/dev/null 2>&1; then
     apt install -y wine-mono
@@ -103,7 +103,7 @@ fi
 # ------------------------------------------
 
 echo
-echo "[6/15] Installing compositor..."
+echo "[6/14] Installing compositor..."
 
 install_dragged_file "Please drag the COMPOSITOR installation file here:"
 
@@ -112,7 +112,7 @@ install_dragged_file "Please drag the COMPOSITOR installation file here:"
 # ------------------------------------------
 
 echo
-echo "[7/15] Installing LineXinBar..."
+echo "[7/14] Installing LineXinBar..."
 
 install_dragged_file "Please drag the LINE XIN BAR installation file here:"
 
@@ -121,7 +121,7 @@ install_dragged_file "Please drag the LINE XIN BAR installation file here:"
 # ------------------------------------------
 
 echo
-echo "[8/15] Installing Flatpak and Flathub..."
+echo "[8/14] Installing Flatpak and Flathub..."
 
 apt install -y flatpak
 
@@ -132,21 +132,13 @@ echo "Updating Flathub AppStream metadata..."
 
 flatpak update --appstream
 
-# ------------------------------------------
-# 9. Install lxb-toolkit
-# ------------------------------------------
-
-echo
-echo "[9/15] Installing lxb-toolkit..."
-
-install_dragged_file "Please drag the LXB-TOOLKIT installation file here:"
 
 # ------------------------------------------
 # 10. Install DistriBumpy
 # ------------------------------------------
 
 echo
-echo "[10/15] Installing DistriBumpy..."
+echo "[9/14] Installing DistriBumpy..."
 
 install_dragged_file "Please drag the DISTRIBUMPY installation file here:"
 
@@ -155,7 +147,7 @@ install_dragged_file "Please drag the DISTRIBUMPY installation file here:"
 # ------------------------------------------
 
 echo
-echo "[11/15] Installing CEDM..."
+echo "[10/14] Installing CEDM..."
 
 install_dragged_file "Please drag the CEDM installation file here:"
 
@@ -164,7 +156,7 @@ install_dragged_file "Please drag the CEDM installation file here:"
 # ------------------------------------------
 
 echo
-echo "[12/15] Installing greetd..."
+echo "[11/14] Installing greetd..."
 
 apt install -y greetd
 
@@ -173,7 +165,7 @@ apt install -y greetd
 # ------------------------------------------
 
 echo
-echo "[13/15] Checking greetd location..."
+echo "[12/14] Checking greetd location..."
 
 GREETD_PATH="$(command -v greetd || true)"
 
@@ -205,7 +197,7 @@ ls -l /usr/bin/greetd
 # ------------------------------------------
 
 echo
-echo "[14/15] Configuring display manager..."
+echo "[13/14] Configuring display manager..."
 
 echo "Disabling LightDM..."
 
@@ -217,11 +209,11 @@ systemctl daemon-reload
 systemctl enable cedm.service
 
 # ------------------------------------------
-# 15. Update GRUB
+# 14. Update GRUB
 # ------------------------------------------
 
 echo
-echo "[15/15] Updating GRUB..."
+echo "[14/14] Updating GRUB..."
 
 update-grub
 
