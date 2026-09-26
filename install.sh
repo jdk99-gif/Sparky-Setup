@@ -93,8 +93,7 @@ fi
 echo
 echo "[5/12] Installing compositor..."
 
-install_dragged_file \
-"Please drag the COMPOSITOR installation file here:"
+install_dragged_file "Please drag the COMPOSITOR installation file here:"
 
 # ------------------------------------------
 # 6. Install LineXinBar
@@ -103,8 +102,7 @@ install_dragged_file \
 echo
 echo "[6/12] Installing LineXinBar..."
 
-install_dragged_file \
-"Please drag the LINE XIN BAR installation file here:"
+install_dragged_file "Please drag the LINE XIN BAR installation file here:"
 
 # ------------------------------------------
 # 7. Install CEDM
@@ -113,8 +111,7 @@ install_dragged_file \
 echo
 echo "[7/12] Installing CEDM..."
 
-install_dragged_file \
-"Please drag the CEDM installation file here:"
+install_dragged_file "Please drag the CEDM installation file here:"
 
 # ------------------------------------------
 # 8. Install greetd
