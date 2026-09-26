@@ -7,7 +7,7 @@ echo
 
 if [ "$(id -u)" -ne 0 ]; then
     echo "Please run this script with sudo:"
-    echo "  sudo sh setup.sh"
+    echo "  sudo sh install.sh"
     exit 1
 fi
 
@@ -44,7 +44,7 @@ install_dragged_file() {
 # 1. Configure GRUB
 # ------------------------------------------
 
-echo "[1/12] Configuring GRUB..."
+echo "[1/11] Configuring GRUB..."
 
 if grep -q '^GRUB_TIMEOUT=' /etc/default/grub; then
     sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
@@ -57,7 +57,7 @@ fi
 # ------------------------------------------
 
 echo
-echo "[2/12] Updating package lists..."
+echo "[2/11] Updating package lists..."
 
 apt update
 
@@ -66,7 +66,7 @@ apt update
 # ------------------------------------------
 
 echo
-echo "[3/12] Installing Wine..."
+echo "[3/11] Installing Wine..."
 
 apt install -y wine
 
@@ -75,7 +75,7 @@ apt install -y wine
 # ------------------------------------------
 
 echo
-echo "[4/12] Installing Wine Mono..."
+echo "[4/11] Installing Wine Mono..."
 
 if apt-cache show wine-mono >/dev/null 2>&1; then
     apt install -y wine-mono
@@ -89,7 +89,7 @@ fi
 # ------------------------------------------
 
 echo
-echo "[5/12] Installing compositor..."
+echo "[5/11] Installing compositor..."
 
 install_dragged_file "Please drag the COMPOSITOR installation file here:"
 
@@ -98,7 +98,7 @@ install_dragged_file "Please drag the COMPOSITOR installation file here:"
 # ------------------------------------------
 
 echo
-echo "[6/12] Installing LineXinBar..."
+echo "[6/11] Installing LineXinBar..."
 
 install_dragged_file "Please drag the LINE XIN BAR installation file here:"
 
@@ -107,7 +107,7 @@ install_dragged_file "Please drag the LINE XIN BAR installation file here:"
 # ------------------------------------------
 
 echo
-echo "[7/12] Installing CEDM..."
+echo "[7/11] Installing CEDM..."
 
 install_dragged_file "Please drag the CEDM installation file here:"
 
@@ -116,7 +116,7 @@ install_dragged_file "Please drag the CEDM installation file here:"
 # ------------------------------------------
 
 echo
-echo "[8/12] Installing greetd..."
+echo "[8/11] Installing greetd..."
 
 apt install -y greetd
 
@@ -125,7 +125,7 @@ apt install -y greetd
 # ------------------------------------------
 
 echo
-echo "[9/12] Checking greetd location..."
+echo "[9/11] Checking greetd location..."
 
 GREETD_PATH="$(command -v greetd || true)"
 
@@ -138,7 +138,6 @@ echo "greetd found at:"
 echo "$GREETD_PATH"
 
 if [ "$GREETD_PATH" != "/usr/bin/greetd" ]; then
-
     echo
     echo "Creating /usr/bin/greetd symlink..."
 
@@ -158,7 +157,7 @@ ls -l /usr/bin/greetd
 # ------------------------------------------
 
 echo
-echo "[10/12] Configuring display manager..."
+echo "[10/11] Configuring display manager..."
 
 echo "Disabling LightDM..."
 
@@ -174,12 +173,12 @@ systemctl enable cedm.service
 # ------------------------------------------
 
 echo
-echo "[11/12] Updating GRUB..."
+echo "[11/11] Updating GRUB..."
 
 update-grub
 
 # ------------------------------------------
-# 12. Finished
+# Finished
 # ------------------------------------------
 
 echo
@@ -189,5 +188,5 @@ echo "=========================================="
 echo
 echo "The system is ready."
 echo
-echo "Please Reboot The System"
+echo "Please reboot the system."
 echo
