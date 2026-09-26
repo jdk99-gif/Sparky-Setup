@@ -44,7 +44,7 @@ install_dragged_file() {
 # 1. Configure GRUB
 # ------------------------------------------
 
-echo "[1/13] Configuring GRUB..."
+echo "[1/15] Configuring GRUB..."
 
 if grep -q '^GRUB_TIMEOUT=' /etc/default/grub; then
     sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
@@ -57,25 +57,39 @@ fi
 # ------------------------------------------
 
 echo
-echo "[2/13] Updating package lists..."
+echo "[2/15] Updating package lists..."
 
 apt update
 
 # ------------------------------------------
-# 3. Install Wine
+# 3. Install Mesa Vulkan drivers
 # ------------------------------------------
 
 echo
-echo "[3/13] Installing Wine..."
+echo "[3/15] Installing Mesa Vulkan drivers..."
+
+if apt-cache show mesa-vulkan-drivers >/dev/null 2>&1; then
+    apt install -y mesa-vulkan-drivers
+else
+    echo "mesa-vulkan-drivers is not available in the configured repositories."
+    echo "Continuing without it..."
+fi
+
+# ------------------------------------------
+# 4. Install Wine
+# ------------------------------------------
+
+echo
+echo "[4/15] Installing Wine..."
 
 apt install -y wine
 
 # ------------------------------------------
-# 4. Install Wine Mono
+# 5. Install Wine Mono
 # ------------------------------------------
 
 echo
-echo "[4/13] Installing Wine Mono..."
+echo "[5/15] Installing Wine Mono..."
 
 if apt-cache show wine-mono >/dev/null 2>&1; then
     apt install -y wine-mono
@@ -85,67 +99,81 @@ else
 fi
 
 # ------------------------------------------
-# 5. Install compositor
+# 6. Install compositor
 # ------------------------------------------
 
 echo
-echo "[5/13] Installing compositor..."
+echo "[6/15] Installing compositor..."
 
 install_dragged_file "Please drag the COMPOSITOR installation file here:"
 
 # ------------------------------------------
-# 6. Install LineXinBar
+# 7. Install LineXinBar
 # ------------------------------------------
 
 echo
-echo "[6/13] Installing LineXinBar..."
+echo "[7/15] Installing LineXinBar..."
 
 install_dragged_file "Please drag the LINE XIN BAR installation file here:"
 
 # ------------------------------------------
-# 7. Install Flatpak and Flathub
+# 8. Install Flatpak and Flathub
 # ------------------------------------------
 
 echo
-echo "[7/13] Installing Flatpak and Flathub..."
+echo "[8/15] Installing Flatpak and Flathub..."
 
 apt install -y flatpak
 
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
+echo
+echo "Updating Flathub AppStream metadata..."
+
+flatpak update --appstream
+
 # ------------------------------------------
-# 8. Install DistriBumpy
+# 9. Install lxb-toolkit
 # ------------------------------------------
 
 echo
-echo "[8/13] Installing DistriBumpy..."
+echo "[9/15] Installing lxb-toolkit..."
+
+install_dragged_file "Please drag the LXB-TOOLKIT installation file here:"
+
+# ------------------------------------------
+# 10. Install DistriBumpy
+# ------------------------------------------
+
+echo
+echo "[10/15] Installing DistriBumpy..."
 
 install_dragged_file "Please drag the DISTRIBUMPY installation file here:"
 
 # ------------------------------------------
-# 9. Install CEDM
+# 11. Install CEDM
 # ------------------------------------------
 
 echo
-echo "[9/13] Installing CEDM..."
+echo "[11/15] Installing CEDM..."
 
 install_dragged_file "Please drag the CEDM installation file here:"
 
 # ------------------------------------------
-# 10. Install greetd
+# 12. Install greetd
 # ------------------------------------------
 
 echo
-echo "[10/13] Installing greetd..."
+echo "[12/15] Installing greetd..."
 
 apt install -y greetd
 
 # ------------------------------------------
-# 11. Check greetd location
+# 13. Check greetd location
 # ------------------------------------------
 
 echo
-echo "[11/13] Checking greetd location..."
+echo "[13/15] Checking greetd location..."
 
 GREETD_PATH="$(command -v greetd || true)"
 
@@ -173,11 +201,11 @@ echo "greetd is available at:"
 ls -l /usr/bin/greetd
 
 # ------------------------------------------
-# 12. Configure display manager
+# 14. Configure display manager
 # ------------------------------------------
 
 echo
-echo "[12/13] Configuring display manager..."
+echo "[14/15] Configuring display manager..."
 
 echo "Disabling LightDM..."
 
@@ -189,11 +217,11 @@ systemctl daemon-reload
 systemctl enable cedm.service
 
 # ------------------------------------------
-# 13. Update GRUB
+# 15. Update GRUB
 # ------------------------------------------
 
 echo
-echo "[13/13] Updating GRUB..."
+echo "[15/15] Updating GRUB..."
 
 update-grub
 
