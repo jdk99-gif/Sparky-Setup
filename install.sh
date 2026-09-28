@@ -7,7 +7,7 @@ echo
 
 if [ "$(id -u)" -ne 0 ]; then
     echo "Please run this script with sudo:"
-    echo "  sudo sh install.sh"
+    echo "  sudo .install.sh"
     exit 1
 fi
 
@@ -55,7 +55,7 @@ install_dragged_file() {
 # 1. Configure GRUB
 # ------------------------------------------
 
-echo "[1/18] Configuring GRUB..."
+echo "[1/19] Configuring GRUB..."
 
 if grep -q '^GRUB_TIMEOUT=' /etc/default/grub; then
     sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
@@ -68,20 +68,25 @@ fi
 # ------------------------------------------
 
 echo
-echo "[2/18] Updating package lists..."
+echo "[2/19] Updating package lists..."
 
 apt update
 
+# ------------------------------------------
+# 3. Upgrade system
+# ------------------------------------------
+
 echo
-echo "[3/18] Upgrading The System..."
+echo "[3/19] Upgrading The System..."
 
 apt upgrade
+
 # ------------------------------------------
-# 3. Install Mesa Vulkan drivers
+# 4. Install Mesa Vulkan drivers
 # ------------------------------------------
 
 echo
-echo "[4/18] Installing Mesa Vulkan drivers..."
+echo "[4/19] Installing Mesa Vulkan drivers..."
 
 if apt-cache show mesa-vulkan-drivers >/dev/null 2>&1; then
     apt install -y mesa-vulkan-drivers
@@ -91,20 +96,20 @@ else
 fi
 
 # ------------------------------------------
-# 4. Install Wine
+# 5. Install Wine
 # ------------------------------------------
 
 echo
-echo "[5/18] Installing Wine..."
+echo "[5/19] Installing Wine..."
 
 apt install -y wine
 
 # ------------------------------------------
-# 5. Install Wine Mono
+# 6. Install Wine Mono
 # ------------------------------------------
 
 echo
-echo "[6/18] Installing Wine Mono..."
+echo "[6/19] Installing Wine Mono..."
 
 if apt-cache show wine-mono >/dev/null 2>&1; then
     apt install -y wine-mono
@@ -114,29 +119,29 @@ else
 fi
 
 # ------------------------------------------
-# 6. Install compositor
+# 7. Install compositor
 # ------------------------------------------
 
 echo
-echo "[7/18] Installing compositor..."
+echo "[7/19] Installing compositor..."
 
 install_dragged_file "Please drag the COMPOSITOR installation file here:"
 
 # ------------------------------------------
-# 7. Install LineXinBar
+# 8. Install LineXinBar
 # ------------------------------------------
 
 echo
-echo "[8/18] Installing LineXinBar..."
+echo "[8/19] Installing LineXinBar..."
 
 install_dragged_file "Please drag the LINE XIN BAR installation file here:"
 
 # ------------------------------------------
-# 8. Install Flatpak and Flathub
+# 9. Install Flatpak and Flathub
 # ------------------------------------------
 
 echo
-echo "[9/18] Installing Flatpak and Flathub..."
+echo "[9/19] Installing Flatpak and Flathub..."
 
 apt install -y flatpak
 
@@ -148,65 +153,65 @@ echo "Updating Flathub AppStream metadata..."
 flatpak update --appstream
 
 # ------------------------------------------
-# 9. Install DistriBumpy
+# 10. Install DistriBumpy
 # ------------------------------------------
 
 echo
-echo "[10/18] Installing DistriBumpy..."
+echo "[10/19] Installing DistriBumpy..."
 
 install_dragged_file "Please drag the DISTRIBUMPY installation file here:"
 
 # ------------------------------------------
-# 10. Install CEDM
+# 11. Install CEDM
 # ------------------------------------------
 
 echo
-echo "[11/18] Installing CEDM..."
+echo "[11/19] Installing CEDM..."
 
 install_dragged_file "Please drag the CEDM installation file here:"
 
 # ------------------------------------------
-# 11. Install ImagOnSole
+# 12. Install ImagOnSole
 # ------------------------------------------
 
 echo
-echo "[12/18] Installing ImagOnSole..."
+echo "[12/19] Installing ImagOnSole..."
 
 install_dragged_file "Please drag the IMAGONSOLE installation file here:"
 
 # ------------------------------------------
-# 12. Install VideOnSole
+# 13. Install VideOnSole
 # ------------------------------------------
 
 echo
-echo "[13/18] Installing VideOnSole..."
+echo "[13/19] Installing VideOnSole..."
 
 install_dragged_file "Please drag the VIDEONSOLE installation file here:"
 
 # ------------------------------------------
-# 13. Install SongOnSole
+# 14. Install SongOnSole
 # ------------------------------------------
 
 echo
-echo "[14/18] Installing SongOnSole..."
+echo "[14/19] Installing SongOnSole..."
 
 install_dragged_file "Please drag the SONGONSOLE installation file here:"
 
 # ------------------------------------------
-# 14. Install greetd
+# 15. Install greetd
 # ------------------------------------------
 
 echo
-echo "[15/18] Installing greetd..."
+echo "[15/19] Installing greetd..."
 
 apt install -y greetd
 
 # ------------------------------------------
-# 15. Check greetd location
+# 16. Check greetd location
 # ------------------------------------------
 
 echo
-echo "[16/18] Checking greetd location..."
+echo "[16/19] Checking greetd location..."
 
 GREETD_PATH="$(command -v greetd || true)"
 
@@ -234,11 +239,11 @@ echo "greetd is available at:"
 ls -l /usr/bin/greetd
 
 # ------------------------------------------
-# 16. Configure display manager
+# 17. Configure display manager
 # ------------------------------------------
 
 echo
-echo "[17/18] Configuring display manager..."
+echo "[17/19] Configuring display manager..."
 
 echo "Disabling LightDM..."
 
@@ -250,21 +255,40 @@ systemctl daemon-reload
 systemctl enable cedm.service
 
 # ------------------------------------------
-# 17. Update GRUB
+# 18. Update GRUB
 # ------------------------------------------
 
 echo
-echo "[18/18] Updating GRUB..."
+echo "[18/19] Updating GRUB..."
 
 update-grub
 
 # ------------------------------------------
-# Finished
+# 19. Remove unwanted package managers
+# ------------------------------------------
+
+echo
+echo "[19/19] Removing Synaptic, GDebi and APTus AppCenter..."
+
+apt remove -y synaptic gdebi gdebi-core sparky-aptus-appcenter
+
+# ------------------------------------------
+# Install KDE Konsole
 # ------------------------------------------
 
 echo
 echo "Installing KDE Konsole..."
-apt install -y konsole && echo "" && echo "Removing XFCE Terminal..." && apt remove -y xfce4-terminal
+
+apt install -y konsole
+
+echo
+echo "Removing XFCE Terminal..."
+
+apt remove -y xfce4-terminal
+
+# ------------------------------------------
+# Finished
+# ------------------------------------------
 
 echo
 echo "=========================================="
@@ -274,4 +298,4 @@ echo
 echo "The system is ready."
 echo
 echo "Please reboot the system."
-echo ""
+echo
