@@ -268,4 +268,4 @@ echo
 echo "The system is ready."
 echo
 echo "Please reboot the system."
-echo ""
+echo "
