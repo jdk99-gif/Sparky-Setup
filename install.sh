@@ -129,7 +129,7 @@ install_dragged_file "Please drag the LINE XIN BAR installation file here:"
 # 8. Install Flatpak and Flathub
 # ------------------------------------------
 
-echo
+ech
 echo "[8/17] Installing Flatpak and Flathub..."
 
 apt install -y flatpak
