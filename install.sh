@@ -20,6 +20,8 @@ USER_NAME="${SUDO_USER:-$USER}"
 sudo -u "$USER_NAME" xdg-open "https://jdk99-gif.github.io/Sparky-Setup/" >/dev/null 2>&1 &
 
 echo
+echo "Please Wait To Webside Open"
+echo
 printf "Press Enter to continue..."
 read _
 echo
