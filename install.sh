@@ -231,7 +231,7 @@ fi
 
 echo
 echo "greetd is available at:"
-ls -l /usr/bin/greet
+ls -l /usr/bin/greetd
 
 # ------------------------------------------
 # 16. Configure display manager
