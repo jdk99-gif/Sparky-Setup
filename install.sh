@@ -137,6 +137,7 @@ echo "[8/17] Installing Flatpak and Flathub..."
 apt install -y flatpak
 
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
 echo
 echo "Updating Flathub AppStream metadata..."
 
