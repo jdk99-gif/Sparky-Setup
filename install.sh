@@ -297,5 +297,5 @@ echo "=========================================="
 echo
 echo "The system is ready."
 echo
-echo "Please reboot the system.
+echo "Please reboot the system."
 echo
