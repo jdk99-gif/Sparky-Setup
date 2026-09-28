@@ -20,7 +20,7 @@ USER_NAME="${SUDO_USER:-$USER}"
 sudo -u "$USER_NAME" xdg-open "https://jdk99-gif.github.io/Sparky-Setup/" >/dev/null 2>&1 &
 
 echo
-echo "Please Wait To Webside Open"
+echo "Please wait until the website loads."
 echo
 printf "Press Enter to continue..."
 read _
@@ -55,7 +55,7 @@ install_dragged_file() {
 # 1. Configure GRUB
 # ------------------------------------------
 
-echo "[1/17] Configuring GRUB..."
+echo "[1/18] Configuring GRUB..."
 
 if grep -q '^GRUB_TIMEOUT=' /etc/default/grub; then
     sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
@@ -68,16 +68,20 @@ fi
 # ------------------------------------------
 
 echo
-echo "[2/17] Updating package lists..."
+echo "[2/18] Updating package lists..."
 
 apt update
 
+echo
+echo "[3/18] Upgrading The System..."
+
+apt upgrade
 # ------------------------------------------
 # 3. Install Mesa Vulkan drivers
 # ------------------------------------------
 
 echo
-echo "[3/17] Installing Mesa Vulkan drivers..."
+echo "[4/18] Installing Mesa Vulkan drivers..."
 
 if apt-cache show mesa-vulkan-drivers >/dev/null 2>&1; then
     apt install -y mesa-vulkan-drivers
@@ -91,7 +95,7 @@ fi
 # ------------------------------------------
 
 echo
-echo "[4/17] Installing Wine..."
+echo "[5/18] Installing Wine..."
 
 apt install -y wine
 
@@ -100,7 +104,7 @@ apt install -y wine
 # ------------------------------------------
 
 echo
-echo "[5/17] Installing Wine Mono..."
+echo "[6/18] Installing Wine Mono..."
 
 if apt-cache show wine-mono >/dev/null 2>&1; then
     apt install -y wine-mono
@@ -114,7 +118,7 @@ fi
 # ------------------------------------------
 
 echo
-echo "[6/17] Installing compositor..."
+echo "[7/18] Installing compositor..."
 
 install_dragged_file "Please drag the COMPOSITOR installation file here:"
 
@@ -123,7 +127,7 @@ install_dragged_file "Please drag the COMPOSITOR installation file here:"
 # ------------------------------------------
 
 echo
-echo "[7/17] Installing LineXinBar..."
+echo "[8/18] Installing LineXinBar..."
 
 install_dragged_file "Please drag the LINE XIN BAR installation file here:"
 
@@ -132,7 +136,7 @@ install_dragged_file "Please drag the LINE XIN BAR installation file here:"
 # ------------------------------------------
 
 echo
-echo "[8/17] Installing Flatpak and Flathub..."
+echo "[9/18] Installing Flatpak and Flathub..."
 
 apt install -y flatpak
 
@@ -148,7 +152,7 @@ flatpak update --appstream
 # ------------------------------------------
 
 echo
-echo "[9/17] Installing DistriBumpy..."
+echo "[10/18] Installing DistriBumpy..."
 
 install_dragged_file "Please drag the DISTRIBUMPY installation file here:"
 
@@ -157,7 +161,7 @@ install_dragged_file "Please drag the DISTRIBUMPY installation file here:"
 # ------------------------------------------
 
 echo
-echo "[10/17] Installing CEDM..."
+echo "[11/18] Installing CEDM..."
 
 install_dragged_file "Please drag the CEDM installation file here:"
 
@@ -166,7 +170,7 @@ install_dragged_file "Please drag the CEDM installation file here:"
 # ------------------------------------------
 
 echo
-echo "[11/17] Installing ImagOnSole..."
+echo "[12/18] Installing ImagOnSole..."
 
 install_dragged_file "Please drag the IMAGONSOLE installation file here:"
 
@@ -175,7 +179,7 @@ install_dragged_file "Please drag the IMAGONSOLE installation file here:"
 # ------------------------------------------
 
 echo
-echo "[12/17] Installing VideOnSole..."
+echo "[13/18] Installing VideOnSole..."
 
 install_dragged_file "Please drag the VIDEONSOLE installation file here:"
 
@@ -184,7 +188,7 @@ install_dragged_file "Please drag the VIDEONSOLE installation file here:"
 # ------------------------------------------
 
 echo
-echo "[13/17] Installing SongOnSole..."
+echo "[14/18] Installing SongOnSole..."
 
 install_dragged_file "Please drag the SONGONSOLE installation file here:"
 
@@ -193,7 +197,7 @@ install_dragged_file "Please drag the SONGONSOLE installation file here:"
 # ------------------------------------------
 
 echo
-echo "[14/17] Installing greetd..."
+echo "[15/18] Installing greetd..."
 
 apt install -y greetd
 
@@ -202,7 +206,7 @@ apt install -y greetd
 # ------------------------------------------
 
 echo
-echo "[15/17] Checking greetd location..."
+echo "[16/18] Checking greetd location..."
 
 GREETD_PATH="$(command -v greetd || true)"
 
@@ -227,14 +231,14 @@ fi
 
 echo
 echo "greetd is available at:"
-ls -l /usr/bin/greetd
+ls -l /usr/bin/greet
 
 # ------------------------------------------
 # 16. Configure display manager
 # ------------------------------------------
 
 echo
-echo "[16/17] Configuring display manager..."
+echo "[17/18] Configuring display manager..."
 
 echo "Disabling LightDM..."
 
@@ -250,7 +254,7 @@ systemctl enable cedm.service
 # ------------------------------------------
 
 echo
-echo "[17/17] Updating GRUB..."
+echo "[18/18] Updating GRUB..."
 
 update-grub
 
