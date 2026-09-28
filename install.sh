@@ -212,7 +212,7 @@ GREETD_PATH="$(command -v greetd || true)"
 
 if [ -z "$GREETD_PATH" ]; then
     echo "ERROR: greetd was not found."
-    exit 1
+    exit 
 fi
 
 echo "greetd found at:"
