@@ -11,17 +11,12 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-# ------------------------------------------
-# Helper: install dragged file
-# ------------------------------------------
-
 USER_NAME="${SUDO_USER:-$USER}"
 
 sudo -u "$USER_NAME" xdg-open "https://jdk99-gif.github.io/Sparky-Setup/" >/dev/null 2>&1 &
 
 echo
 echo "Please wait until the website loads."
-echo
 printf "Press Enter to continue..."
 read _
 echo
@@ -37,7 +32,6 @@ install_dragged_file() {
 
     read FILE
 
-    # Remove quotes added by the terminal
     FILE=$(printf '%s' "$FILE" | sed "s/^['\"]//;s/['\"]\$//")
 
     if [ ! -f "$FILE" ]; then
@@ -55,7 +49,7 @@ install_dragged_file() {
 # 1. Configure GRUB
 # ------------------------------------------
 
-echo "[1/20] Configuring GRUB..."
+echo "[1/22] Configuring GRUB..."
 
 if grep -q '^GRUB_TIMEOUT=' /etc/default/grub; then
     sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
@@ -68,8 +62,7 @@ fi
 # ------------------------------------------
 
 echo
-echo "[2/20] Updating package lists..."
-
+echo "[2/22] Updating package lists..."
 apt update
 
 # ------------------------------------------
@@ -77,8 +70,7 @@ apt update
 # ------------------------------------------
 
 echo
-echo "[3/20] Upgrading The System..."
-
+echo "[3/22] Upgrading the system..."
 apt upgrade
 
 # ------------------------------------------
@@ -86,7 +78,7 @@ apt upgrade
 # ------------------------------------------
 
 echo
-echo "[4/20] Installing Mesa Vulkan drivers..."
+echo "[4/22] Installing Mesa Vulkan drivers..."
 
 if apt-cache show mesa-vulkan-drivers >/dev/null 2>&1; then
     apt install -y mesa-vulkan-drivers
@@ -100,8 +92,7 @@ fi
 # ------------------------------------------
 
 echo
-echo "[5/20] Installing Wine..."
-
+echo "[5/22] Installing Wine..."
 apt install -y wine
 
 # ------------------------------------------
@@ -109,7 +100,7 @@ apt install -y wine
 # ------------------------------------------
 
 echo
-echo "[6/20] Installing Wine Mono..."
+echo "[6/22] Installing Wine Mono..."
 
 if apt-cache show wine-mono >/dev/null 2>&1; then
     apt install -y wine-mono
@@ -123,8 +114,7 @@ fi
 # ------------------------------------------
 
 echo
-echo "[7/20] Installing compositor..."
-
+echo "[7/22] Installing compositor..."
 install_dragged_file "Please drag the COMPOSITOR installation file here:"
 
 # ------------------------------------------
@@ -132,92 +122,112 @@ install_dragged_file "Please drag the COMPOSITOR installation file here:"
 # ------------------------------------------
 
 echo
-echo "[8/20] Installing LineXinBar..."
-
+echo "[8/22] Installing LineXinBar..."
 install_dragged_file "Please drag the LINEXINBAR installation file here:"
 
 # ------------------------------------------
-# 9. Install Flatpak and Flathub
+# 9. Install lxb-retroarch
 # ------------------------------------------
 
 echo
-echo "[9/20] Installing lxb-retroarch"
-
+echo "[9/22] Installing lxb-retroarch..."
 install_dragged_file "Please drag the lxb-retroarch installation file here:"
 
+# ------------------------------------------
+# 10. Install lxb-heroic
+# ------------------------------------------
 
 echo
-echo "[10/20] Installing Flatpak and Flathub..."
+echo "[10/22] Installing lxb-heroic..."
+install_dragged_file "Please drag the lxb-heroic installation file here:"
+
+# ------------------------------------------
+# 11. Install Flatpak and Flathub
+# ------------------------------------------
+
+echo
+echo "[11/22] Installing Flatpak and Flathub..."
 
 apt install -y flatpak
 
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak remote-add --if-not-exists flathub \
+    https://flathub.org/repo/flathub.flatpakrepo
 
 echo
 echo "Updating Flathub AppStream metadata..."
-
 flatpak update --appstream
 
 # ------------------------------------------
-# 10. Install DistriBumpy
+# 12. Install RPCS3 through Flatpak
 # ------------------------------------------
 
 echo
-echo "[11/20] Installing DistriBumpy..."
+echo "[12/22] Installing RPCS3 through Flatpak..."
 
+flatpak install -y flathub net.rpcs3.RPCS3
+
+# ------------------------------------------
+# 13. Install lxb-rpcs3
+# ------------------------------------------
+
+echo
+echo "[13/22] Installing lxb-rpcs3..."
+install_dragged_file "Please drag the lxb-rpcs3 installation file here:"
+
+# ------------------------------------------
+# 14. Install DistriBumpy
+# ------------------------------------------
+
+echo
+echo "[14/22] Installing DistriBumpy..."
 install_dragged_file "Please drag the DISTRIBUMPY installation file here:"
 
 # ------------------------------------------
-# 11. Install CEDM
+# 15. Install CEDM
 # ------------------------------------------
 
 echo
-echo "[12/20] Installing CEDM..."
-
+echo "[15/22] Installing CEDM..."
 install_dragged_file "Please drag the CEDM installation file here:"
 
 # ------------------------------------------
-# 12. Install ImagOnSole
+# 16. Install ImagOnSole
 # ------------------------------------------
 
 echo
-echo "[13/20] Installing ImagOnSole..."
-
+echo "[16/22] Installing ImagOnSole..."
 install_dragged_file "Please drag the IMAGONSOLE installation file here:"
 
 # ------------------------------------------
-# 13. Install VideOnSole
+# 17. Install VideOnSole
 # ------------------------------------------
 
 echo
-echo "[14/20] Installing VideOnSole..."
-
+echo "[17/22] Installing VideOnSole..."
 install_dragged_file "Please drag the VIDEONSOLE installation file here:"
 
 # ------------------------------------------
-# 14. Install SongOnSole
+# 18. Install SongOnSole
 # ------------------------------------------
 
 echo
-echo "[15/20] Installing SongOnSole..."
-
+echo "[18/22] Installing SongOnSole..."
 install_dragged_file "Please drag the SONGONSOLE installation file here:"
 
 # ------------------------------------------
-# 15. Install greetd
+# 19. Install greetd
 # ------------------------------------------
 
 echo
-echo "[16/20] Installing greetd..."
-
+echo "[19/22] Installing greetd..."
 apt install -y greetd
 
 # ------------------------------------------
-# 16. Check greetd location
+# 20. Check greetd location
 # ------------------------------------------
 
 echo
-echo "[17/20] Checking greetd location..."
+echo "[20/22] Checking greetd location..."
 
 GREETD_PATH="$(command -v greetd || true)"
 
@@ -245,37 +255,29 @@ echo "greetd is available at:"
 ls -l /usr/bin/greetd
 
 # ------------------------------------------
-# 17. Configure display manager
+# 21. Configure display manager
 # ------------------------------------------
 
 echo
-echo "[18/20] Configuring display manager..."
+echo "[21/22] Configuring display manager..."
 
 echo "Disabling LightDM..."
-
 systemctl disable lightdm.service 2>/dev/null || true
 
 echo "Enabling CEDM..."
-
 systemctl daemon-reload
 systemctl enable cedm.service
 
 # ------------------------------------------
-# 18. Update GRUB
+# 22. Update GRUB and remove unwanted packages
 # ------------------------------------------
 
 echo
-echo "[19/20] Updating GRUB..."
-
+echo "[22/22] Updating GRUB..."
 update-grub
 
-# ------------------------------------------
-# 19. Remove unwanted package managers
-# ------------------------------------------
-
 echo
-echo "[20/20] Removing Synaptic, GDebi and APTus AppCenter..."
-
+echo "Removing Synaptic, GDebi and APTus AppCenter..."
 apt remove -y synaptic gdebi gdebi-core sparky-aptus-appcenter
 
 # ------------------------------------------
@@ -284,12 +286,10 @@ apt remove -y synaptic gdebi gdebi-core sparky-aptus-appcenter
 
 echo
 echo "Installing KDE Konsole..."
-
 apt install -y konsole
 
 echo
 echo "Removing XFCE Terminal..."
-
 apt remove -y xfce4-terminal
 
 # ------------------------------------------
