@@ -46,10 +46,34 @@ install_dragged_file() {
 }
 
 # ------------------------------------------
-# 1. Configure GRUB
+# 1. Install Liquorix Kernel and set as 1st in GRUB
 # ------------------------------------------
 
-echo "[1/22] Configuring GRUB..."
+echo "[1/23] Installing Liquorix Kernel and configuring GRUB..."
+
+apt update
+apt install -y curl
+
+curl -fsSL https://liquorix.net/install-liquorix.sh | bash
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: Failed to install Liquorix kernel."
+    exit 1
+fi
+
+# Ustawienie indeksu 0 (pierwsza pozycja w GRUB) jako domyślnego jądra
+sed -i 's/^GRUB_DEFAULT=.*/GRUB_DEFAULT=0/' /etc/default/grub
+
+if ! grep -q "^GRUB_DEFAULT=" /etc/default/grub; then
+    echo 'GRUB_DEFAULT=0' >> /etc/default/grub
+fi
+
+# ------------------------------------------
+# 2. Configure GRUB Timeout
+# ------------------------------------------
+
+echo
+echo "[2/23] Configuring GRUB timeout..."
 
 if grep -q '^GRUB_TIMEOUT=' /etc/default/grub; then
     sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
@@ -58,27 +82,27 @@ else
 fi
 
 # ------------------------------------------
-# 2. Update repositories
+# 3. Update repositories
 # ------------------------------------------
 
 echo
-echo "[2/22] Updating package lists..."
+echo "[3/23] Updating package lists..."
 apt update
 
 # ------------------------------------------
-# 3. Upgrade system
+# 4. Upgrade system
 # ------------------------------------------
 
 echo
-echo "[3/22] Upgrading the system..."
+echo "[4/23] Upgrading the system..."
 apt upgrade
 
 # ------------------------------------------
-# 4. Install Mesa Vulkan drivers
+# 5. Install Mesa Vulkan drivers
 # ------------------------------------------
 
 echo
-echo "[4/22] Installing Mesa Vulkan drivers..."
+echo "[5/23] Installing Mesa Vulkan drivers..."
 
 if apt-cache show mesa-vulkan-drivers >/dev/null 2>&1; then
     apt install -y mesa-vulkan-drivers
@@ -88,19 +112,19 @@ else
 fi
 
 # ------------------------------------------
-# 5. Install Wine
+# 6. Install Wine
 # ------------------------------------------
 
 echo
-echo "[5/22] Installing Wine..."
+echo "[6/23] Installing Wine..."
 apt install -y wine
 
 # ------------------------------------------
-# 6. Install Wine Mono
+# 7. Install Wine Mono
 # ------------------------------------------
 
 echo
-echo "[6/22] Installing Wine Mono..."
+echo "[7/23] Installing Wine Mono..."
 
 if apt-cache show wine-mono >/dev/null 2>&1; then
     apt install -y wine-mono
@@ -110,43 +134,43 @@ else
 fi
 
 # ------------------------------------------
-# 7. Install compositor
+# 8. Install compositor
 # ------------------------------------------
 
 echo
-echo "[7/22] Installing compositor..."
+echo "[8/23] Installing compositor..."
 install_dragged_file "Please drag the COMPOSITOR installation file here:"
 
 # ------------------------------------------
-# 8. Install LineXinBar
+# 9. Install LineXinBar
 # ------------------------------------------
 
 echo
-echo "[8/22] Installing LineXinBar..."
+echo "[9/23] Installing LineXinBar..."
 install_dragged_file "Please drag the LINEXINBAR installation file here:"
 
 # ------------------------------------------
-# 9. Install lxb-retroarch
+# 10. Install lxb-retroarch
 # ------------------------------------------
 
 echo
-echo "[9/22] Installing lxb-retroarch..."
+echo "[10/23] Installing lxb-retroarch..."
 install_dragged_file "Please drag the lxb-retroarch installation file here:"
 
 # ------------------------------------------
-# 10. Install lxb-heroic
+# 11. Install lxb-heroic
 # ------------------------------------------
 
 echo
-echo "[10/22] Installing lxb-heroic..."
+echo "[11/23] Installing lxb-heroic..."
 install_dragged_file "Please drag the lxb-heroic installation file here:"
 
 # ------------------------------------------
-# 11. Install Flatpak and Flathub
+# 12. Install Flatpak and Flathub
 # ------------------------------------------
 
 echo
-echo "[11/22] Installing Flatpak and Flathub..."
+echo "[12/23] Installing Flatpak and Flathub..."
 
 apt install -y flatpak
 
@@ -158,76 +182,76 @@ echo "Updating Flathub AppStream metadata..."
 flatpak update --appstream
 
 # ------------------------------------------
-# 12. Install RPCS3 through Flatpak
+# 13. Install RPCS3 through Flatpak
 # ------------------------------------------
 
 echo
-echo "[12/22] Installing RPCS3 through Flatpak..."
+echo "[13/23] Installing RPCS3 through Flatpak..."
 
 flatpak install -y flathub net.rpcs3.RPCS3
 
 # ------------------------------------------
-# 13. Install lxb-rpcs3
+# 14. Install lxb-rpcs3
 # ------------------------------------------
 
 echo
-echo "[13/22] Installing lxb-rpcs3..."
+echo "[14/23] Installing lxb-rpcs3..."
 install_dragged_file "Please drag the lxb-rpcs3 installation file here:"
 
 # ------------------------------------------
-# 14. Install DistriBumpy
+# 15. Install DistriBumpy
 # ------------------------------------------
 
 echo
-echo "[14/22] Installing DistriBumpy..."
+echo "[15/23] Installing DistriBumpy..."
 install_dragged_file "Please drag the DISTRIBUMPY installation file here:"
 
 # ------------------------------------------
-# 15. Install CEDM
+# 16. Install CEDM
 # ------------------------------------------
 
 echo
-echo "[15/22] Installing CEDM..."
+echo "[16/23] Installing CEDM..."
 install_dragged_file "Please drag the CEDM installation file here:"
 
 # ------------------------------------------
-# 16. Install ImagOnSole
+# 17. Install ImagOnSole
 # ------------------------------------------
 
 echo
-echo "[16/22] Installing ImagOnSole..."
+echo "[17/23] Installing ImagOnSole..."
 install_dragged_file "Please drag the IMAGONSOLE installation file here:"
 
 # ------------------------------------------
-# 17. Install VideOnSole
+# 18. Install VideOnSole
 # ------------------------------------------
 
 echo
-echo "[17/22] Installing VideOnSole..."
+echo "[18/23] Installing VideOnSole..."
 install_dragged_file "Please drag the VIDEONSOLE installation file here:"
 
 # ------------------------------------------
-# 18. Install SongOnSole
+# 19. Install SongOnSole
 # ------------------------------------------
 
 echo
-echo "[18/22] Installing SongOnSole..."
+echo "[19/23] Installing SongOnSole..."
 install_dragged_file "Please drag the SONGONSOLE installation file here:"
 
 # ------------------------------------------
-# 19. Install greetd
+# 20. Install greetd
 # ------------------------------------------
 
 echo
-echo "[19/22] Installing greetd..."
+echo "[20/23] Installing greetd..."
 apt install -y greetd
 
 # ------------------------------------------
-# 20. Check greetd location
+# 21. Check greetd location
 # ------------------------------------------
 
 echo
-echo "[20/22] Checking greetd location..."
+echo "[21/23] Checking greetd location..."
 
 GREETD_PATH="$(command -v greetd || true)"
 
@@ -255,11 +279,11 @@ echo "greetd is available at:"
 ls -l /usr/bin/greetd
 
 # ------------------------------------------
-# 21. Configure display manager
+# 22. Configure display manager
 # ------------------------------------------
 
 echo
-echo "[21/22] Configuring display manager..."
+echo "[22/23] Configuring display manager..."
 
 echo "Disabling LightDM..."
 systemctl disable lightdm.service 2>/dev/null || true
@@ -269,11 +293,11 @@ systemctl daemon-reload
 systemctl enable cedm.service
 
 # ------------------------------------------
-# 22. Update GRUB and remove unwanted packages
+# 23. Update GRUB and remove unwanted packages
 # ------------------------------------------
 
 echo
-echo "[22/22] Updating GRUB..."
+echo "[23/23] Updating GRUB..."
 update-grub
 
 echo
@@ -304,4 +328,3 @@ echo
 echo "The system is ready."
 echo
 echo "Please reboot the system."
-echo
